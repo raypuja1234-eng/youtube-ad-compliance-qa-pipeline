@@ -178,55 +178,6 @@ Notes:
 - Azure Video Indexer credentials are required for the download/upload/indexing flow.
 - Application Insights is optional but enables telemetry.
 
-## Setup
-
-### Option 1: uv
-
-```bash
-uv sync
-```
-
-### Option 2: pip
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-If you are using the project as configured in `pyproject.toml`, prefer installing dependencies with `uv` or `pip install` for the required packages listed there.
-
-## Run the workflow
-
-### Simulated CLI audit
-
-```bash
-python main.py
-```
-
-This runs the sample workflow defined in `main.py` against a default YouTube URL.
-
-### Start the API server
-
-```bash
-uvicorn backend.src.api.server:app --reload
-```
-
-Then call the audit endpoint:
-
-```bash
-curl -X POST http://127.0.0.1:8000/audit \
-  -H "Content-Type: application/json" \
-  -d '{"video_url":"https://youtu.be/dT7S75eYhcQ"}'
-```
-
-### Index the compliance PDFs
-
-```bash
-python backend/scripts/index_documents.py
-```
-
-This script loads the PDF rule documents from `backend/data`, splits them into chunks, and stores them in Azure AI Search for semantic retrieval.
 
 ## Example workflow behavior
 
@@ -246,30 +197,6 @@ The system is built to return results in a structured form similar to:
 }
 ```
 
-## Use cases
-
-This project is useful for:
-
-- Brand review automation
-- Advertising compliance QA
-- Influencer campaign review
-- Regulatory content monitoring
-- Video content policy enforcement for marketing teams
-
-## Limitations and considerations
-
-- Azure services must be provisioned and configured correctly.
-- The system currently expects YouTube URLs and may fail if the source video is unavailable or restricted.
-- Video indexing is asynchronous and may require waiting for processing completion.
-- The project is a prototype and may need environment-specific tuning for production deployments.
-- Success depends on access to a valid Azure OpenAI deployment, Azure AI Search index, and Azure Video Indexer account.
-
 ## Summary
 
 This repository is a Python-based AI compliance pipeline for auditing YouTube advertisements. It combines modern AI, retrieval, and orchestration tools to automate the review of ad content against policy and brand requirements. The design is modular, Azure-centric, and suitable for extension into a production compliance QA workflow.
-
-## Notes
-
-- The repository is intentionally structured around clear modular responsibilities.
-- The workflow can be extended with additional nodes, rule sources, or output formats.
-- The project is best suited for experimentation, internal tooling, and proof-of-concept automation in regulated marketing environments.
